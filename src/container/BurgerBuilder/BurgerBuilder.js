@@ -15,7 +15,7 @@ class BurgerBuilder extends Component {
   render(){
     return <Aux>
         <Burger ingredients={this.state.ingredients}></Burger>
-        <div>Build Components</div>
+        <div>Build Components for adding ingredients</div>
     </Aux>
   }
 }
