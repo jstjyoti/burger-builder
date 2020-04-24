@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 
-import Aux from '../../hoc/Aux';
+// import Aux from '../../hoc/Aux';
 import BuildControls from '../../components/Burger/BuildControls/BuildCntrols';
 import Burger from '../../components/Burger/Burger';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
 const PRICES ={
   salad: 10.50,
@@ -19,7 +21,8 @@ class BurgerBuilder extends Component {
       salad: 0
     },
     totalPrice: 50,
-    purchasable: false
+    purchasable: false,
+    purchasing: false
   }
   updatePurchaseState (ing) {
     const ingredients={ ...ing };
@@ -27,6 +30,9 @@ class BurgerBuilder extends Component {
       return sum + el;
     },0)
     this.setState({ purchasable: sum > 0 });
+  }
+  purchaseHandler = () => {
+    this.setState({purchasing: true});
   }
   addIngredientHandler = (type) => {
     const count = this.state.ingredients[type];
@@ -54,6 +60,10 @@ class BurgerBuilder extends Component {
     this.setState({ingredients: updatedIngredients, totalPrice: price});
     this.updatePurchaseState(updatedIngredients);
   }
+
+  purchaseCancelHandler = () => {
+    this.setState({purchasing: false});
+  }
   render(){
     const disableInfo = {
       ...this.state.ingredients
@@ -62,14 +72,17 @@ class BurgerBuilder extends Component {
       disableInfo[keys] = disableInfo[keys] <= 0
     }
     return <>
-
+      <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+        <OrderSummary ingredients={this.state.ingredients}></OrderSummary>
+      </Modal>
       <Burger ingredients={this.state.ingredients}></Burger>
       <BuildControls 
       price={this.state.totalPrice} 
       disabled={disableInfo} 
       added={this.addIngredientHandler} 
       removed={this.removeIngredientHandler} 
-      purchasable={this.state.purchasable}></BuildControls>
+      purchasable={this.state.purchasable}
+      order={this.purchaseHandler}></BuildControls>
       
     </>
   }

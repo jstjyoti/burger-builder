@@ -1,7 +1,7 @@
 .Wrapper { 
   width: 100%;
   margin:auto;
-  height: 250px;
+  height: 200px;
   overflow: scroll;
   text-align: center;
   font-weight: bold;
@@ -11,20 +11,20 @@
 @media (min-width: 550px) and (min-height: 500px){
   .Wrapper{
     width: 450px;
-    height: 400px;
+    height: 350px;
   }
 }
 
 @media (min-width: 500px) and (max-height: 400px){
   .Wrapper{
     width: 350px;
-    height: 300px;
+    height: 250px;
   }
 }
 
 @media (min-width: 1000px) and (max-height: 700px){
   .Wrapper{
     width: 700px;
-    height: 600px;
+    height: 500px;
   }
 }
