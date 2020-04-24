@@ -1,4 +1,4 @@
-# burger-builderith react principles
+# burger-builder with react principles
 An application for building a burger 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
