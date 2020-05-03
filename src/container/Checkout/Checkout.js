@@ -1,5 +1,5 @@
 import React,  {Component} from 'react';
-import CheckoutSummary from '../../components/Orders/ChechoutSummary';
+import CheckoutSummary from '../../components/Orders/CheckoutSummary';
 import {Route } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 class Checkout extends Component{
@@ -13,9 +13,11 @@ class Checkout extends Component{
     let price = 0;
     for (let params of query.entries()){
       if(params[0] === 'price'){
-        price = params[1];
+        price = +params[1];
       }
-      ingredient[params[0]] = +params[1];
+      else {
+        ingredient[params[0]] = +params[1];
+      }
     }
     this.setState({ingredients: ingredient, totalPrice: price});
   }
