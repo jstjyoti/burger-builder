@@ -6,11 +6,59 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Forms/Input/Input';
 export default class ContactData extends Component {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm:{
+        name: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Your Name'
+          },
+          value: 'Jyoti'
+        },
+        street: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Your Street'
+          },
+          value: 'Street'
+        },
+        zipcode: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Zipcode'
+          },
+          value: '123456'
+        },
+        country: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder:'Country'
+          },
+          value: 'India'
+        },
+        email: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'email',
+            placeholder: 'Your Email'
+          },
+          value: 'abc@email.com'
+        },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [{value: 'fastest', displayValue: 'fastest'},
+          {value: 'cheapest', displayValue: 'cheapest'},
+          {value: 'ease', displayValue: 'ease'}
+          ],
+          type: '',
+          placeholder: 'Your Name'
+        },
+        value: 'Jyoti'
+      },
     },
     loading: false
   }
@@ -42,13 +90,19 @@ export default class ContactData extends Component {
         this.setState({loading: false});
       });
   }
+
   render(){
+    let formElement = [];
+    for (let key in this.state.orderForm){
+        formElement.push({
+          id: key,
+          config: this.state.orderForm[key]
+        })
+    }
     let form = this.state.loading ? <Spinner></Spinner> : <form>
-    <Input inputtype='input' type='text' name='name' placeholder='Your Name' ></Input>
-    <Input inputtype='input' type='text' name='email' placeholder='Your Email' ></Input>
-    <Input inputtype='input' type='text' name='street' placeholder='Street' className={classes.Input}></Input>
-    <Input inputtype='input' type='text' name='postal' placeholder='Postal Code' className={classes.Input}></Input>
-    <Button btnType='Success' click={this.orderHandler}>ORDER</Button>
+    {formElement.map(el => {
+      return <Input key={el.value} elementType={el.config.elementType} elementConfig={el.config.elementConfig} ></Input>
+    })}
   </form>;
     return <div className={classes.Contact}>
       <h4>
