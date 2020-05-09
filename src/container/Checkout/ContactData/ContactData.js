@@ -8,6 +8,7 @@ export default class ContactData extends Component {
   state = {
     orderForm:{
         name: {
+          id: 'name',
           elementType: 'input',
           elementConfig: {
             type: 'text',
@@ -16,6 +17,7 @@ export default class ContactData extends Component {
           value: 'Jyoti'
         },
         street: {
+          id: 'street',
           elementType: 'input',
           elementConfig: {
             type: 'text',
@@ -24,6 +26,7 @@ export default class ContactData extends Component {
           value: 'Street'
         },
         zipcode: {
+          id: 'zipcode',
           elementType: 'input',
           elementConfig: {
             type: 'text',
@@ -32,6 +35,7 @@ export default class ContactData extends Component {
           value: '123456'
         },
         country: {
+          id:'country',
           elementType: 'input',
           elementConfig: {
             type: 'text',
@@ -40,6 +44,7 @@ export default class ContactData extends Component {
           value: 'India'
         },
         email: {
+          id: 'email',
           elementType: 'input',
           elementConfig: {
             type: 'email',
@@ -48,37 +53,40 @@ export default class ContactData extends Component {
           value: 'abc@email.com'
         },
       deliveryMethod: {
+        id:'deliveryMethod',
         elementType: 'select',
         elementConfig: {
           options: [{value: 'fastest', displayValue: 'fastest'},
           {value: 'cheapest', displayValue: 'cheapest'},
           {value: 'ease', displayValue: 'ease'}
           ],
-          type: '',
-          placeholder: 'Your Name'
+          type: 'select',
+          placeholder: 'Your deliver method'
         },
-        value: 'Jyoti'
+        value: 'fastest'
       },
     },
     loading: false
   }
+  inputChangeHandler = (e, inputId) => {
+    const updateOrderForm = {...this.state.orderForm};
+    const updatedFormEl = {...updateOrderForm[inputId]};
+    updatedFormEl.value = e.target.value;
+    updateOrderForm[inputId] = updatedFormEl;
+    this.setState({orderForm: updateOrderForm});
+  }
   orderHandler= (e) => {
     e.preventDefault();
     this.setState({loading: true});
+    const formData = {};
+    for (let el in this.state.orderForm){
+      formData[el] = this.state.orderForm[el].value;
+    }
+    
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'Jyoti',
-        address:{
-          street: 'abc',
-          zipCode: '123654',
-          country: 'India'
-        },
-        email: 'abc@gmail.com',
-        phone: '9874563210'
-      },
-      deliveryMethod: 'fastest'
+      orderData: formData
     }
     //send data to server
     //nodename .json for firebase
@@ -99,11 +107,18 @@ export default class ContactData extends Component {
           config: this.state.orderForm[key]
         })
     }
-    let form = this.state.loading ? <Spinner></Spinner> : <form>
-    {formElement.map(el => {
-      return <Input key={el.value} elementType={el.config.elementType} elementConfig={el.config.elementConfig} ></Input>
-    })}
-  </form>;
+    let form = this.state.loading ? <Spinner></Spinner> : <form onSubmit={this.orderHandler}>
+      {formElement.map(el => {
+        return <Input key={el.id} elementType={el.config.elementType} 
+        elementConfig={el.config.elementConfig} 
+        value={el.value}
+        change={(e)=>{
+          return this.inputChangeHandler(e, el.id)
+        }}
+        ></Input>
+      })}
+      <Button btnType='Success' >ORDER</Button>
+    </form>;
     return <div className={classes.Contact}>
       <h4>
         Enter Contact Data
