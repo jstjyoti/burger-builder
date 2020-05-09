@@ -93,18 +93,19 @@ export default class ContactData extends Component {
         value: 'fastest'
       },
     },
-    loading: false
+    loading: false,
+    formValid: false
   }
 
   checkValidity(value, rules){
     let isValid = true;
-      if(rules.required){
+      if(rules && rules.required){
         isValid  = value.trim() !== '' && isValid;
       }
-      if(rules.minlength){
+      if(rules && rules.minlength){
         isValid  = value.length >= rules.minlength && isValid;
       }
-    if(rules.maxlength){
+    if(rules && rules.maxlength){
       isValid  = value.length <= rules.maxlength && isValid;
       }
 
@@ -119,7 +120,12 @@ export default class ContactData extends Component {
     updatedFormEl.valid = this.checkValidity(updatedFormEl.value, updatedFormEl.validation );
     updatedFormEl.touched = true;
     updateOrderForm[inputId] = updatedFormEl;
-    this.setState({orderForm: updateOrderForm});
+
+    let formValid = true;
+    for (let id in updateOrderForm){
+      formValid = !!updateOrderForm[id].valid && formValid;
+    }
+    this.setState({orderForm: updateOrderForm, formValid: formValid});
   }
   orderHandler= (e) => {
     e.preventDefault();
@@ -166,7 +172,7 @@ export default class ContactData extends Component {
         }}
         ></Input>
       })}
-      <Button btnType='Success' >ORDER</Button>
+      <Button btnType='Success' disabled={!this.state.formValid}>ORDER</Button>
     </form>;
     return <div className={classes.Contact}>
       <h4>
