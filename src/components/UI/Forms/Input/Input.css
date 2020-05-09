@@ -20,6 +20,10 @@
   font:inherit;
   padding: 6px 10px;
 }
+.Invalid{
+  border: 1px solid #ff0000;
+  background-color: #fab3b3;
+}
 
 .InputElement:focus{
   outline: none;
