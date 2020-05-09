@@ -14,7 +14,11 @@ export default class ContactData extends Component {
             type: 'text',
             placeholder: 'Your Name'
           },
-          value: 'Jyoti'
+          value: 'Jyoti',
+          validation: {
+            required: true
+          },
+          valid: false
         },
         street: {
           id: 'street',
@@ -23,7 +27,11 @@ export default class ContactData extends Component {
             type: 'text',
             placeholder: 'Your Street'
           },
-          value: 'Street'
+          value: 'Street',
+          validation: {
+            required: true
+          },
+          valid: false
         },
         zipcode: {
           id: 'zipcode',
@@ -32,7 +40,13 @@ export default class ContactData extends Component {
             type: 'text',
             placeholder: 'Zipcode'
           },
-          value: '123456'
+          value: '123456',
+          validation: {
+            required: true,
+            minlength: 5,
+            maxlength: 6
+          },
+          valid: false
         },
         country: {
           id:'country',
@@ -41,7 +55,11 @@ export default class ContactData extends Component {
             type: 'text',
             placeholder:'Country'
           },
-          value: 'India'
+          value: 'India',
+          validation: {
+            required: true
+          },
+          valid: false
         },
         email: {
           id: 'email',
@@ -50,7 +68,11 @@ export default class ContactData extends Component {
             type: 'email',
             placeholder: 'Your Email'
           },
-          value: 'abc@email.com'
+          value: 'abc@email.com',
+          validation: {
+            required: true
+          },
+          valid: false
         },
       deliveryMethod: {
         id:'deliveryMethod',
@@ -68,10 +90,27 @@ export default class ContactData extends Component {
     },
     loading: false
   }
+
+  checkValidity(value, rules){
+    let isValid = true;
+      if(rules.required){
+        isValid  = value.trim() !== '' && isValid;
+      }
+      if(rules.minlength){
+        isValid  = value.length >= rules.minlength && isValid;
+      }
+    if(rules.maxlength){
+      isValid  = value.length <= rules.maxlength && isValid;
+      }
+
+    return isValid;
+  }
+
   inputChangeHandler = (e, inputId) => {
     const updateOrderForm = {...this.state.orderForm};
     const updatedFormEl = {...updateOrderForm[inputId]};
     updatedFormEl.value = e.target.value;
+    updatedFormEl.valid = this.checkValidity(updatedFormEl.value, updatedFormEl.validation );
     updateOrderForm[inputId] = updatedFormEl;
     this.setState({orderForm: updateOrderForm});
   }
@@ -113,7 +152,7 @@ export default class ContactData extends Component {
         elementConfig={el.config.elementConfig} 
         value={el.value}
         change={(e)=>{
-          return this.inputChangeHandler(e, el.id)
+          return this.inputChangeHandler(e, el.id);
         }}
         ></Input>
       })}
