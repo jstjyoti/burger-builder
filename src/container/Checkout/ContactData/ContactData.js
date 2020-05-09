@@ -151,6 +151,8 @@ export default class ContactData extends Component {
         return <Input key={el.id} elementType={el.config.elementType} 
         elementConfig={el.config.elementConfig} 
         value={el.value}
+        invalid = {!el.config.valid}
+        shouldValidate = {el.config.validation}
         change={(e)=>{
           return this.inputChangeHandler(e, el.id);
         }}
