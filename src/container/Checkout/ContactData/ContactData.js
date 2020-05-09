@@ -18,7 +18,8 @@ export default class ContactData extends Component {
           validation: {
             required: true
           },
-          valid: false
+          valid: false,
+          touched: false
         },
         street: {
           id: 'street',
@@ -31,7 +32,8 @@ export default class ContactData extends Component {
           validation: {
             required: true
           },
-          valid: false
+          valid: false,
+          touched: false
         },
         zipcode: {
           id: 'zipcode',
@@ -46,7 +48,8 @@ export default class ContactData extends Component {
             minlength: 5,
             maxlength: 6
           },
-          valid: false
+          valid: false,
+          touched: false
         },
         country: {
           id:'country',
@@ -59,7 +62,8 @@ export default class ContactData extends Component {
           validation: {
             required: true
           },
-          valid: false
+          valid: false,
+          touched: false
         },
         email: {
           id: 'email',
@@ -72,7 +76,8 @@ export default class ContactData extends Component {
           validation: {
             required: true
           },
-          valid: false
+          valid: false,
+          touched: false
         },
       deliveryMethod: {
         id:'deliveryMethod',
@@ -107,10 +112,12 @@ export default class ContactData extends Component {
   }
 
   inputChangeHandler = (e, inputId) => {
+
     const updateOrderForm = {...this.state.orderForm};
     const updatedFormEl = {...updateOrderForm[inputId]};
     updatedFormEl.value = e.target.value;
     updatedFormEl.valid = this.checkValidity(updatedFormEl.value, updatedFormEl.validation );
+    updatedFormEl.touched = true;
     updateOrderForm[inputId] = updatedFormEl;
     this.setState({orderForm: updateOrderForm});
   }
@@ -152,6 +159,7 @@ export default class ContactData extends Component {
         elementConfig={el.config.elementConfig} 
         value={el.value}
         invalid = {!el.config.valid}
+        touched = {el.config.touched}
         shouldValidate = {el.config.validation}
         change={(e)=>{
           return this.inputChangeHandler(e, el.id);
