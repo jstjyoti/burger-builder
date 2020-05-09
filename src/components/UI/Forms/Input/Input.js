@@ -4,7 +4,7 @@ import classes from './Input.css';
 const input = (props) => {
   let inputEle = null;
   let inputClasses = [classes.InputElement];
-  if(props.invalid && props.shouldValidate){
+  if(props.invalid && props.shouldValidate && props.touched){
     inputClasses.push(classes.Invalid);
   }
   switch(props.elementType) {
@@ -28,10 +28,19 @@ const input = (props) => {
       inputEle = <input className={inputClasses.join(' ')} {...props.elementConfig} value={props.value} onChange={props.change}/>
 
   }
-  return <div className={classes.Input}> 
-    <label className={classes.Label}>{props.label}</label>
-    {inputEle}
-  </div>
+
+  let validationError = null;
+    if (props.invalid && props.touched) {
+        validationError = <p>Please enter a Valid Value!</p>;
+    }
+    
+    return (
+        <div className={classes.Input}>
+            <label className={classes.Label}>{props.label}</label>
+            {inputEle}
+            {validationError}
+        </div>
+ );
 }
 
 export default input;
